@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        .clear {
+            clear: both
+        }
+
+        #container {
+            width: 800px;
+            height: 300px;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #list {
+            position: absolute;
+            width: 6400px;
+            height: 300px;
+            z-index: 1;
+            overflow: hidden;
+            left: -800px;
+        }
+
+        .list {
+            width: 800px;
+            height: 300px;
+            float: left;
+        }
+
+        .purple {
+            background: purple;
+        }
+
+        .red {
+            background: red;
+        }
+
+        .orange {
+            background: orange;
+        }
+
+        .yellow {
+            background: yellow;
+        }
+
+        .green {
+            background: green;
+        }
+
+        .blue {
+            background: blue;
+        }
+
+        #buttons {
+            position: absolute;
+            left: 350px;
+            width: 96px;
+            bottom: 20px;
+            height: 10px;
+            z-index: 2;
+        }
+
+        #buttons span {
+            float: left;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            z-index: 2;
+            margin-right: 4px;
+        }
+
+        #buttons .on {
+            background: #fff;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 53px;
+            z-index: 2;
+            width: 28px;
+            height: 148px;
+            font-size: 36px;
+            font-weight: bold;
+            line-height: 139px;
+            text-align: center;
+            color: hsla(0, 0%, 100%, .4);
+            background: rgba(0, 0, 0, .2);
+            cursor: pointer;
+            display: none;
+        }
+
+        #prev {
+            left: 20px;
+        }
+
+        #next {
+            right: 20px;
+        }
+
+        #container:hover .arrow {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div class="banner">
+    <div id="container">
+        <div id="list">
+            <div class="purple list"></div>
+            <div class="red list"></div>
+            <div class="orange list"></div>
+            <div class="yellow list"></div>
+            <div class="green list"></div>
+            <div class="blue list"></div>
+            <div class="purple list"></div>
+            <div class="red list"></div>
+            <div class="clear"></div>
+        </div>
+        <div id="buttons">
+            <span idx="1" class="on"></span>
+            <span idx="2"></span>
+            <span idx="3"></span>
+            <span idx="4"></span>
+            <span idx="5"></span>
+            <span idx="6"></span>
+        </div>
+        <div class="arrow" id="prev">&lt;</div>
+        <div class="arrow" id="next">&gt;</div>
+    </div>
+</div>
+<script src="jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var index = 1;
+        var timer = setInterval(gogogo, 2000);
+
+        function gogogo() {
+            if (!$("#list").is(":animated") && parseInt($("#list").css("left")) > -4800) {
+                index++;
+                $("#list").animate({"left": (-index * 800)});
+                $("#buttons span").removeClass("on").eq(index - 1).addClass("on")
+            } else {
+                index = 1;
+                $("#list").css("left", "-800px");
+                $("#buttons span").removeClass("on").eq(index - 1).addClass("on")
+            }
+        }
+
+        $("#container").hover(function () {
+            clearInterval(timer);
+            timer = null;
+        }, function () {
+            timer = setInterval(gogogo, 2000)
+        })
+        $("#next").click(gogogo);
+        $("#prev").click(function () {
+            if (!$("#list").is(":animated") && parseInt($("#list").css("left")) < -800) {
+                index--;
+                $("#list").animate({"left": (-index * 800)});
+                $("#buttons span").removeClass("on").eq(index - 1).addClass("on")
+            } else {
+                index = 6;
+                $("#list").css("left", "-4800px");
+                $("#buttons span").removeClass("on").eq(index - 1).addClass("on")
+            }
+        })
+        $("#buttons span").click(function () {
+            $(this).addClass("on").siblings().removeClass("on");
+            $("#list").css({"left": -($(this).attr('idx')) * 800})
+        })
+    })
+</script>
+</body>
+</html>
+
+
+
+
